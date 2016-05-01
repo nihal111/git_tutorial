@@ -1,0 +1,212 @@
+GIT Tutorial
+
+What is GIT?
+Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
+Version control is a system that records changes to a file or set of files over time so that you can recall specific versions later.
+
+Git is a DVCS, which means that clients don’t just check out the latest snapshot of the files: they fully mirror the repository. Thus if any server dies, and these systems were collaborating via it, any of the client repositories can be copied back up to the server to restore it. Every clone is really a full backup of all the data.
+
+Git allows the users working on a project to mirror and save all changes they make on the central server as well as keep a copy in their own system.
+
+Git specifically works by taking “snapshots” of files; if files remain unchanged in a particular version, it simply links to the previous files – this keeps everything fast and lean.
+
+
+Getting Started with GIT:
+
+Setup Name and Email
+
+git config --global user.name "Your Name"
+git config --global user.email "your_email@whatever.com"
+
+Setup Line Ending Preferences
+
+Every time you press return on your keyboard you're actually inserting an invisible character called a line ending. Historically, different operating systems have handled line endings differently.
+
+When you view changes in a file, Git handles line endings in its own way. Since you're collaborating on projects with Git and GitHub, Git might produce unexpected results if, for example, you're working on a Windows machine, and your collaborator has made a change in OS X.
+
+Windows:
+git config --global core.autocrlf true
+git config --global core.safecrlf true
+
+Unix/Mac
+git config --global core.autocrlf input
+git config --global core.safecrlf true
+
+--------
+
+Check status:
+Displays paths that have differences between the index file and the current HEAD commit, paths that have differences between the working tree and the index file, and paths in the working tree that are not tracked by Git 
+
+git status
+
+Status in short:
+git status -s
+
+Status of ignored files too:
+git status --ignored
+
+--------
+Create a Repository
+git init
+
+--------
+
+Add files to STAGE a commit:
+git add
+
+Add a particular file:
+git add <filename>
+
+Add all files having extension .txt (not in sub-directories)
+git add *.txt
+
+Add all files having extension .txt (in sub-directories as well)
+git add \*.txt
+
+Add all files
+git add -A
+git add -all
+git add . (For git 2.x For git 1.x git add . is same as git add --ignore-removal)
+
+Add all files being tracked (that have been commited before)
+git add -u
+git add --update
+
+Add all files but without removing deleted files which are being tracked
+git add --ignore-removal
+
+Force add file listed in gitignore
+git add <filename> -f
+
+---------
+
+Undo a git add
+
+To undo the staging of one or more files:
+git reset -- <file 1> <file 2> <file n>
+
+To unstaged all staged changes (go to last commit state)
+git reset
+
+---------
+
+Ignoring files (gitignore)
+gitignore - Specifies intentionally untracked files to ignore
+
+Create a file ".gitignore" in the working directory
+Add list of filenames to be ignored/ left untracked.
+
+Creating a .gitignore file in windows can be tricky as Windows won't let you name it ".gitignore" by asking for a file name
+Workaround: Name it gitignore.txt, fire up cmd go to directory and execute "ren gitignore.txt .gitignore"
+
+----------
+
+Commiting Staged changes
+git commit
+
+Easiest way:
+git commit -m "Commit message"
+
+Amending a previous commit:
+git commit --amend -m"New commit message"
+
+Using the Default Text Editor
+git commit
+
+#If default text editor is vim
+Type in the commit message in the first line (Being in INSERT mode)
+Hit ESC (Go to COMMENT mode)
+Type :wq (to write and quit) and then hit enter
+
+---------
+
+Remove all changes made to a file since last staging.
+
+git checkout -- <filename>
+
+Edit changes made in staging
+
+git reset -p
+Browse through hunks and make manual changes.
+
+---------
+
+View log of all commits:
+
+git log
+
+--pretty="..." defines the format of the output. (short/medium/long/fuller/oneline/email)
+%h is the abbreviated hash of the commit
+%d are any decorations on that commit (e.g. branch heads or tags)
+%ad is the author date
+%s is the comment
+%an is the author name
+--graph informs git to display the commit tree in an ASCII graph layout
+--date=short keeps the date format nice and short
+
+Single line:
+git log --pretty=oneline
+
+Formatted with date and time:
+git log --all --pretty=format:'%h %cd %s (%an)'
+
+Better Format:
+git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+--------
+
+Setting aliases
+
+alias gs='git status'
+alias ga='git add -A'
+
+Can also change .gitconfig file in $HOME directory by adding:
+[alias]
+	ga = git add -A
+	gs = git status
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+--------
+
+Checkout:
+
+Go to a previous state after commit <hash>
+git checkout <hash>
+
+By checking out a branch by name, you go to the latest version of that branch.
+Go to last commit on master branch:
+git checkout master
+
+Go to latest version of the current branch
+git checkout HEAD
+
+Go to n'th ancestor of <hash>/HEAD/<branchname>
+git checkout <hash>~n
+git checkout HEAD~n
+
+--------
+
+Tagging:
+
+Tag current version of program as tagname
+git tag <Tagname>
+
+Remove a tag:
+git tag -d <tagname>
+
+--------
+
+Revert:
+Undo commited changes
+
+git revert <hash>/HEAD
+
+Reset to a previous state:
+git reset --hard <tagname>/<hash>
+
+Resets on local branches are generally safe. Any “accidents” can usually be recovered from by just resetting again with the desired commit.
+
+However, if the branch is shared on remote repositories, resetting can confuse other users sharing the branch.
+
+-------
+
